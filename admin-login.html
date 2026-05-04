@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZubaeAutos - Admin Login</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #ff6b6b;
+            --accent-color: #4ecdc4;
+            --bg-light: #f8f9fa;
+            --text-light: #ffffff;
+            --text-dark: #2c3e50;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+        }
+
+        .login-wrapper {
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .login-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-admin {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), #2d2e4e);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .logo-admin h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .logo-admin p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin: 0.3rem 0 0 0;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .login-subtitle {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 2rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .btn-login {
+            padding: 1.1rem;
+            background: linear-gradient(135deg, var(--secondary-color), #ff5252);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer-link {
+            color: #999;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            display: none;
+            padding: 1rem;
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            animation: shake 0.3s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .success-message {
+            display: none;
+            padding: 1rem;
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+            }
+
+            .login-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .logo-admin h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn-login {
+                padding: 0.95rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-container">
+            <!-- Logo -->
+            <div class="login-header">
+                <div class="logo-admin">
+                    <h1>ZubaeAutos</h1>
+                    <p>Admin Portal</p>
+                </div>
+                <h2 class="login-title">Admin Login</h2>
+                <p class="login-subtitle">Secure access to your business dashboard</p>
+            </div>
+
+            <!-- Messages -->
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <!-- Login Form -->
+            <form id="adminLoginForm" class="login-form" onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label for="adminPassword">Admin Password</label>
+                    <input 
+                        type="password" 
+                        id="adminPassword" 
+                        placeholder="Enter your admin password" 
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+                <button type="submit" class="btn-login" id="loginBtn">Login to Dashboard</button>
+            </form>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <p class="footer-link">
+                    <a href="welcome.html">← Back to Main Website</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = "Afia123nti";
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            
+            const password = document.getElementById('adminPassword').value;
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // Clear messages
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+
+            // Validate password
+            if (password === ADMIN_PASSWORD) {
+                // Show success message
+                successMsg.textContent = 'Login successful! Redirecting...';
+                successMsg.classList.add('show');
+                
+                // Set admin session
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                
+                // Disable button temporarily
+                loginBtn.disabled = true;
+                loginBtn.textContent = 'Logging in...';
+                
+                // Redirect to admin dashboard
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 1000);
+            } else {
+                // Show error message
+                errorMsg.textContent = 'Invalid password. Please try again.';
+                errorMsg.classList.add('show');
+                
+                // Clear password field
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+
+        // Focus on password input on page load
+        window.addEventListener('load', () => {
+            document.getElementById('adminPassword').focus();
+        });
+
+        // Allow Enter key to submit
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('adminLoginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>

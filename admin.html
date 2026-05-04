@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZubaeAutos - Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <h1>ZubaeAutos Admin</h1>
+            <form id="loginForm">
+                <input type="password" id="adminPassword" placeholder="Enter Admin Password" required>
+                <button type="submit" class="btn btn-login">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-container" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>ZubaeAutos</h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" onclick="switchTab('overview')">Dashboard</a>
+                <a href="#" class="nav-item" onclick="switchTab('cars')">Manage Cars</a>
+                <a href="#" class="nav-item" onclick="switchTab('customers')">Customers</a>
+                <a href="#" class="nav-item" onclick="switchTab('inquiries')">Customer Inquiries</a>
+                <a href="#" class="nav-item" onclick="switchTab('settings')">Settings</a>
+                <a href="#" class="nav-item logout" onclick="logout()">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="admin-header">
+                <h1>Admin Dashboard</h1>
+                <div class="header-right">
+                    <span class="admin-user">Admin</span>
+                </div>
+            </header>
+
+            <!-- Overview Tab -->
+            <section id="overview" class="tab-content active">
+                <h2>Dashboard Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">�</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Total Cars</p>
+                            <p class="stat-value" id="totalCars">6</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Total Customers</p>
+                            <p class="stat-value" id="totalCustomers">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">                        <div class="stat-icon">📧</div>
+                        <div class="stat-info">
+                            <p class="stat-label">New Inquiries</p>
+                            <p class="stat-value" id="totalInquiries">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📞</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Your Phones</p>
+                            <p class="stat-value">055-2174569</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✓</div>
+                        <div class="stat-info">
+                            <p class="stat-label">WhatsApp Ready</p>
+                            <p class="stat-value">✓ Active</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="switchTab('cars'); document.getElementById('addCarBtn').click();">
+                            Add New Car
+                        </button>
+                        <button class="action-btn" onclick="switchTab('inquiries');">
+                            View Inquiries
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cars Management Tab -->
+            <section id="cars" class="tab-content">
+                <div class="section-header">
+                    <h2>Manage Your Fleet</h2>
+                    <button id="addCarBtn" class="btn btn-primary" onclick="openAddCarModal()">Add New Car</button>
+                </div>
+
+                <div id="carsTable" class="cars-table-container">
+                    <!-- Cars will be populated here -->
+                </div>
+            </section>
+
+            <!-- Customers Tab -->
+            <section id="customers" class="tab-content">
+                <h2>All Customers</h2>
+                <div id="customersList" class="customers-list">
+                    <p class="empty-state">No customers yet. Registered customers will appear here.</p>
+                </div>
+            </section>
+
+            <!-- Customer Inquiries Tab -->
+            <section id="inquiries" class="tab-content">
+                <h2>Customer Inquiries</h2>
+                <div id="inquiriesList" class="inquiries-list">
+                    <p class="empty-state">No inquiries yet. Customers will appear here when they contact you.</p>
+                </div>
+            </section>
+
+            <!-- Settings Tab -->
+            <section id="settings" class="tab-content">
+                <h2>Settings</h2>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>📞 Phone Number 1</label>
+                        <input type="text" id="phone1" placeholder="e.g., 055-2174569" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>📞 Phone Number 2</label>
+                        <input type="text" id="phone2" placeholder="e.g., 053-537854" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>💬 WhatsApp Link</label>
+                        <input type="text" id="whatsappLink" placeholder="WhatsApp link" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Admin Password</label>
+                        <input type="password" id="newPassword" placeholder="New password">
+                        <button class="btn btn-secondary" onclick="changePassword()">Update Password</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Backup Data</label>
+                        <button class="btn btn-secondary" onclick="backupData()">Download Backup</button>
+                        <button class="btn btn-secondary" onclick="document.getElementById('restoreFile').click()">Restore Backup</button>
+                        <input type="file" id="restoreFile" style="display:none;" onchange="restoreData(event)">
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add/Edit Car Modal -->
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCarModal()">&times;</span>
+            <h2 id="modalTitle">Add New Car</h2>
+            <form id="carForm">
+                <div class="form-group">
+                    <label>Car Name</label>
+                    <input type="text" id="carName" placeholder="e.g., Toyota Corolla" required>
+                </div>
+                <div class="form-group">
+                    <label>Model/Year</label>
+                    <input type="text" id="carModel" placeholder="e.g., 2023 - Economy" required>
+                </div>
+                <div class="form-group">
+                    <label>Price per Day (₵)</label>
+                    <input type="number" id="carPrice" placeholder="45" required min="0">
+                </div>
+                <div class="form-group">
+                    <label>Transmission</label>
+                    <select id="carTransmission" required>
+                        <option value="">Select Transmission</option>
+                        <option value="Automatic">Automatic</option>
+                        <option value="Manual">Manual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Number of Passengers</label>
+                    <input type="number" id="carPassengers" placeholder="5" required min="1" max="9">
+                </div>
+                <div class="form-group">
+                    <label>Fuel Type</label>
+                    <select id="carFuel" required>
+                        <option value="">Select Fuel Type</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Electric">Electric</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Emoji/Icon</label>
+                    <input type="text" id="carEmoji" placeholder="🚗" maxlength="2">
+                </div>
+                <div class="form-group">
+                    <label>Car Image</label>
+                    <input type="file" id="carImage" accept="image/*">
+                    <div id="imagePreview" style="margin-top: 1rem; text-align: center;"></div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn btn-primary">Save Car</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeCarModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>

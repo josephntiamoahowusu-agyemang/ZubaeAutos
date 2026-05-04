@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZubaeAutos - Premium Car Rental Services</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        // Check if user has seen welcome page
+        if (!sessionStorage.getItem('visitedWelcome')) {
+            sessionStorage.setItem('visitedWelcome', 'true');
+            window.location.href = 'welcome.html';
+        }
+    </script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="container">
+            <a href="#home" class="logo" style="text-decoration: none; color: inherit;">
+                <h1>ZubaeAutos</h1>
+                <p>Premium Car Rental</p>
+            </a>
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#cars">Our Fleet</a>
+                <a href="#contact">Contact</a>
+                <div class="user-profile-section">
+                    <button class="btn-login" id="loginBtn" onclick="openAuthModal()">Login</button>
+                    <div class="user-profile" id="userProfile" style="display: none;">
+                        <span class="user-name" id="userName"></span>
+                        <button class="btn-logout" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Drive Your Dream Car</h2>
+            <p>Premium car rental service at affordable prices</p>
+            <a href="#cars" class="btn btn-primary">Explore Our Fleet</a>
+        </div>
+    </section>
+
+    <!-- Cars Section -->
+    <section id="cars" class="cars-section">
+        <div class="container">
+            <h2 class="section-title">Our Fleet</h2>
+            <div class="cars-grid" id="carsGrid">
+                <!-- Cars will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Need Help?</h3>
+                    <p>Contact us for quick assistance:</p>
+                    <a href="https://wa.me/message/32JFCSOBEFQYF1" class="btn btn-whatsapp" target="_blank">
+                        Chat on WhatsApp
+                    </a>
+                    <p class="phone-number">055-2174569 / 053-537854</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ZubaeAutos. All rights reserved.</p>
+            <p>Premium car rental services at your doorstep</p>
+            <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;" id="adminLinkContainer">
+                <a href="admin-login.html" style="color: inherit; text-decoration: none; cursor: pointer;">Admin</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal for Car Details -->
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Car details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox for Full-Size Images -->
+    <div id="imageLightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-image" id="lightboxImage" src="" alt="Car">
+        <div class="lightbox-info" id="lightboxInfo"></div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="auth-close" onclick="closeAuthModal()">&times;</span>
+            
+            <!-- Login Tab -->
+            <div id="loginTab" class="auth-tab active">
+                <h2>Login</h2>
+                <div id="googleLoginButton" class="google-signin-container"></div>
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="auth-toggle">Don't have an account? <a onclick="switchAuthTab('signup')">Sign up</a></p>
+            </div>
+            
+            <!-- Signup Tab -->
+            <div id="signupTab" class="auth-tab">
+                <h2>Create Account</h2>
+                <div id="googleSignupButton" class="google-signin-container"></div>
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                <form id="signupForm" onsubmit="handleSignup(event)">
+                    <input type="text" id="signupName" placeholder="Your full name" required>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    <input type="tel" id="signupPhone" placeholder="Your phone number" required>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+                <p class="auth-toggle">Already have an account? <a onclick="switchAuthTab('login')">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
