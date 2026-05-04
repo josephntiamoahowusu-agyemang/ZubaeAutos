@@ -75,12 +75,15 @@ document.addEventListener('DOMContentLoaded', function() {
     checkUserLoggedIn();
 });
 
-// Check if user is already logged in
+// Check if user is already logged in - SIGNUP COMPULSORY
 function checkUserLoggedIn() {
     const currentUser = localStorage.getItem('zubae_currentUser');
     if (currentUser) {
         const user = JSON.parse(currentUser);
         displayUserProfile(user);
+    } else {
+        // Redirect to welcome page if not logged in
+        window.location.href = 'welcome.html';
     }
 }
 
@@ -130,6 +133,24 @@ function openAuthModal(carId = null, tab = 'signup') {
 // Close auth modal
 function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
+}
+
+// Open user details modal
+function openUserDetailsModal() {
+    const currentUser = JSON.parse(localStorage.getItem('zubae_currentUser'));
+    if (currentUser) {
+        document.getElementById('detailName').textContent = currentUser.name;
+        document.getElementById('detailEmail').textContent = currentUser.email;
+        document.getElementById('detailPhone').textContent = currentUser.phone;
+        const memberDate = new Date(currentUser.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        document.getElementById('detailDate').textContent = memberDate;
+        document.getElementById('userDetailsModal').style.display = 'flex';
+    }
+}
+
+// Close user details modal
+function closeUserDetailsModal() {
+    document.getElementById('userDetailsModal').style.display = 'none';
 }
 
 // Switch between login and signup tabs
@@ -269,9 +290,9 @@ function handleLogin(event) {
         return;
     }
     
-    // Regular user login
+    // Regular user login - check both email and password
     const users = JSON.parse(localStorage.getItem('zubae_users')) || [];
-    const user = users.find(u => u.email === email);
+    const user = users.find(u => u.email === email && u.password === password);
     
     if (user) {
         localStorage.setItem('zubae_currentUser', JSON.stringify(user));
@@ -294,7 +315,13 @@ function handleLogin(event) {
             }, 500);
         }
     } else {
-        alert('Email not found. Please create an account.');
+        // Check if email exists but password is wrong
+        const emailExists = users.find(u => u.email === email);
+        if (emailExists) {
+            alert('Incorrect password. Please try again.');
+        } else {
+            alert('Email not found. Please create an account.');
+        }
     }
 }
 
@@ -304,6 +331,12 @@ function handleSignup(event) {
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
     const phone = document.getElementById('signupPhone').value;
+    const password = document.getElementById('signupPassword').value;
+    
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters long.');
+        return;
+    }
     
     const users = JSON.parse(localStorage.getItem('zubae_users')) || [];
     
@@ -314,8 +347,8 @@ function handleSignup(event) {
         return;
     }
     
-    // Create new user
-    const newUser = { name, email, phone, createdAt: new Date().toISOString() };
+    // Create new user with password
+    const newUser = { name, email, phone, password, createdAt: new Date().toISOString() };
     users.push(newUser);
     localStorage.setItem('zubae_users', JSON.stringify(users));
     localStorage.setItem('zubae_currentUser', JSON.stringify(newUser));

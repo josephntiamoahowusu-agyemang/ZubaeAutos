@@ -528,7 +528,7 @@
                     </div>
                 </div>
 
-                <a href="index.html" class="btn-get-started">Get Started</a>
+                <button class="btn-get-started" onclick="openAuthModal('signup')">Get Started</button>
 
                 <div class="button-group">
                     <button class="btn-card btn-card-login" onclick="openAuthModal('login')">Login</button>
@@ -552,6 +552,7 @@
                 <h2>Login</h2>
                 <form id="loginForm" onsubmit="handleLogin(event)">
                     <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
                     <button type="submit" class="btn btn-primary">Login with Email</button>
                 </form>
                 <p class="auth-toggle">Don't have an account? <a onclick="switchAuthTab('signup')">Sign up</a></p>
@@ -564,6 +565,7 @@
                     <input type="text" id="signupName" placeholder="Your full name" required>
                     <input type="email" id="signupEmail" placeholder="Enter your email" required>
                     <input type="tel" id="signupPhone" placeholder="Your phone number" required>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required>
                     <button type="submit" class="btn btn-primary">Create Account</button>
                 </form>
                 <p class="auth-toggle">Already have an account? <a onclick="switchAuthTab('login')">Login</a></p>
@@ -606,12 +608,13 @@
         function handleLogin(event) {
             event.preventDefault();
             const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
             
             // Load users from localStorage
             const users = JSON.parse(localStorage.getItem('zubae_users')) || [];
             
-            // Find user by email
-            const user = users.find(u => u.email === email);
+            // Find user by email and password
+            const user = users.find(u => u.email === email && u.password === password);
             
             if (user) {
                 // Store current user
@@ -621,7 +624,13 @@
                 // Optionally redirect to main site
                 setTimeout(() => window.location.href = 'index.html', 500);
             } else {
-                alert('User not found. Please create an account first.');
+                // Check if email exists but password is wrong
+                const emailExists = users.find(u => u.email === email);
+                if (emailExists) {
+                    alert('Incorrect password. Please try again.');
+                } else {
+                    alert('User not found. Please create an account first.');
+                }
             }
         }
 
@@ -631,6 +640,12 @@
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
             
             // Load existing users
             let users = JSON.parse(localStorage.getItem('zubae_users')) || [];
@@ -641,12 +656,14 @@
                 return;
             }
             
-            // Create new user
+            // Create new user with password
             const newUser = {
                 id: Date.now(),
                 name: name,
                 email: email,
                 phone: phone,
+                password: password,
+                createdAt: new Date().toISOString(),
                 provider: 'email'
             };
             

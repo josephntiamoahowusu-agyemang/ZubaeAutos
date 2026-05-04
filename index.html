@@ -30,6 +30,7 @@
                     <button class="btn-login" id="loginBtn" onclick="openAuthModal()">Login</button>
                     <div class="user-profile" id="userProfile" style="display: none;">
                         <span class="user-name" id="userName"></span>
+                        <button class="btn-profile-details" id="profileDetailsBtn" onclick="openUserDetailsModal()">View Details</button>
                         <button class="btn-logout" onclick="logout()">Logout</button>
                     </div>
                 </div>
@@ -94,6 +95,33 @@
         </div>
     </div>
 
+    <!-- User Details Modal -->
+    <div id="userDetailsModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="auth-close" onclick="closeUserDetailsModal()">&times;</span>
+            <h2>My Profile</h2>
+            <div class="user-details-content">
+                <div class="detail-item">
+                    <label>Name:</label>
+                    <p id="detailName"></p>
+                </div>
+                <div class="detail-item">
+                    <label>Email:</label>
+                    <p id="detailEmail"></p>
+                </div>
+                <div class="detail-item">
+                    <label>Phone:</label>
+                    <p id="detailPhone"></p>
+                </div>
+                <div class="detail-item">
+                    <label>Member Since:</label>
+                    <p id="detailDate"></p>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="closeUserDetailsModal()" style="width: 100%; margin-top: 1.5rem;">Close</button>
+        </div>
+    </div>
+
     <!-- Lightbox for Full-Size Images -->
     <div id="imageLightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
@@ -132,6 +160,7 @@
                     <input type="text" id="signupName" placeholder="Your full name" required>
                     <input type="email" id="signupEmail" placeholder="Enter your email" required>
                     <input type="tel" id="signupPhone" placeholder="Your phone number" required>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required>
                     <button type="submit" class="btn btn-primary">Create Account</button>
                 </form>
                 <p class="auth-toggle">Already have an account? <a onclick="switchAuthTab('login')">Login</a></p>
